@@ -29,6 +29,18 @@ public class UserService {
         return repo.insert(obj);
     }
 
+    public User update(User obj) {
+        User newObj = repo.findById(obj.getId())
+                .orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+        updateDate(newObj, obj);
+        return repo.save(newObj);
+    }
+
+    public void updateDate(User newObj, User obj) {
+        newObj.setName(obj.getName());
+        newObj.setEmail(obj.getEmail());
+    }
+
     public void delete(String id) {
         findById(id);
         repo.deleteById(id);
@@ -37,5 +49,7 @@ public class UserService {
     public User fromDTO(UserDTO objDto) {
         return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
     }
+
+    
 
 }
